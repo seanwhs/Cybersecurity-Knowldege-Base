@@ -353,3 +353,487 @@ Focus Areas:
 ---
 
 **This document now represents a full enterprise-grade Zero Trust operating blueprint.**
+
+---
+
+# ☁ Cloud Control Plane Zero Trust Architecture
+
+> **Objective:** Secure the most powerful attack surface in modern enterprises — the **cloud control plane** — by enforcing **identity-driven Zero Trust**, continuous verification, and SOC-integrated detection.
+
+In modern cloud environments, **compromising the control plane equals total platform takeover**. Attackers no longer need to exploit servers — they exploit **IAM**, **metadata services**, **token brokers**, and **CI/CD identities**.
+
+This architecture establishes a **Cognitive Cloud Control Plane Security Model**.
+
+---
+
+## 🧠 Mental Model: Cloud as a Distributed Identity Operating System
+
+Traditional thinking:
+
+> Cloud = Compute + Network + Storage
+
+Modern reality:
+
+> Cloud = **Identity + API + Policy + Token + Telemetry**
+
+Every cloud action is:
+
+```
+Identity → Token → API → Resource
+```
+
+If an attacker controls **identity or token issuance**, they own the cloud.
+
+---
+
+## 🏗 Cloud Zero Trust Reference Architecture
+
+```mermaid
+flowchart TB
+    subgraph External
+        Dev[Developer]
+        CICD[CI/CD Pipeline]
+        SaaS[SaaS Integrations]
+    end
+
+    subgraph ControlPlane [Cloud Control Plane]
+        IAM[Identity & Access Management]
+        STS[Token Broker / STS]
+        PDP[Policy Decision Engine]
+        Audit[Audit Logs]
+    end
+
+    subgraph DataPlane [Cloud Runtime]
+        VM[Compute]
+        K8S[Kubernetes]
+        DB[(Databases)]
+        OBJ[(Object Storage)]
+    end
+
+    subgraph SOC
+        SIEM
+        SOAR
+        IR[Incident Response]
+    end
+
+    Dev & CICD & SaaS --> IAM --> STS --> PDP --> DataPlane
+    DataPlane --> Audit --> SIEM --> SOAR --> IR --> PDP
+```
+
+---
+
+## 🎯 Core Principles
+
+### 1. Identity Is the Only Perimeter
+
+* No implicit trust based on network location
+* No long-lived credentials
+* No standing privilege
+
+### 2. Tokens Are High-Value Assets
+
+Modern attackers steal **OAuth tokens, STS, workload identity tokens**, not passwords.
+
+### 3. All Actions Are Policy Evaluations
+
+Every API call becomes:
+
+```
+Request → Context → Risk → Decision → Enforcement → Telemetry
+```
+
+---
+
+## 🧬 Cloud Attack Kill Chain
+
+```mermaid
+flowchart LR
+    Phish[Phishing] --> Token[Token Theft]
+    Token --> PrivEsc[Privilege Escalation]
+    PrivEsc --> APIAbuse[API Abuse]
+    APIAbuse --> Persistence[Persistence]
+    Persistence --> Exfil[Data Exfiltration]
+```
+
+---
+
+## 🚨 Primary Cloud Threat Classes
+
+| Threat                    | Description                                   |
+| ------------------------- | --------------------------------------------- |
+| **Token Theft**           | Stealing OAuth, STS, workload identity tokens |
+| **Golden SAML**           | Forging authentication assertions             |
+| **CI/CD Abuse**           | Compromising pipeline identities              |
+| **Metadata Exploitation** | Stealing instance credentials                 |
+| **API Enumeration**       | Discovering high-privilege APIs               |
+
+---
+
+## 🏛 Policy Decision Model
+
+```mermaid
+flowchart LR
+    Req[Request] --> Ctx[Context Enrichment]
+    Ctx --> Risk[Risk Engine]
+    Risk --> Decision{Allow?}
+    Decision -->|Yes| Token[Short-Lived Token]
+    Decision -->|No| Deny[Deny + Alert]
+```
+
+---
+
+## 🔍 Detection Engineering — Cloud Control Plane
+
+### Core Detection Philosophy
+
+> **Detect misuse of identity, not infrastructure.**
+
+---
+
+### KQL: Azure Privilege Escalation Detection
+
+```kql
+AuditLogs
+| where OperationName contains "Add member to role"
+| where Result == "success"
+| project TimeGenerated, InitiatedBy, TargetResources
+```
+
+---
+
+### Splunk: AWS AssumeRole Abuse
+
+```spl
+index=cloudtrail eventName=AssumeRole
+| stats count by sourceIPAddress, userIdentity.arn, requestParameters.roleArn
+| where count > 5
+```
+
+---
+
+## 🧪 Blue Team Lab — Cloud Control Plane Breach
+
+### Scenario: Token Theft → Admin Privilege → Persistence
+
+**Objective:** Detect and evict attacker who steals cloud workload identity.
+
+---
+
+### Investigation Workflow
+
+```mermaid
+flowchart LR
+    Alert --> Identity
+    Identity --> Token
+    Token --> API
+    API --> PrivEsc
+    PrivEsc --> Containment
+```
+
+---
+
+## 🚩 Red Team Lab — Cloud Token Hijacking
+
+### Attack: Instance Metadata Credential Theft
+
+```bash
+curl http://169.254.169.254/latest/meta-data/iam/security-credentials/
+```
+
+---
+
+## 🔐 Hardening Controls
+
+| Layer     | Control                       |
+| --------- | ----------------------------- |
+| Identity  | Conditional Access + CAE      |
+| Token     | Short-lived STS (≤15m)        |
+| CI/CD     | Workload Identity Federation  |
+| API       | SCP / Azure Policy Guardrails |
+| Telemetry | Immutable Audit Logs          |
+
+---
+
+## 🧭 Repository Integration
+
+```
+architecture-blueprints/
+ └── cloud_zero_trust_control_plane.md
+
+threat-modeling/
+ └── cloud_control_plane_threat_model.md
+
+labs/
+ ├── blue_team/cloud_breach.md
+ └── red_team/cloud_token_attack.md
+```
+
+---
+
+## 🧠 Final Mental Model
+
+> **You do not secure servers.
+> You secure identities.
+> You do not block attacks.
+> You collapse trust.
+> You do not chase alerts.
+> You control decision engines.**
+
+---
+
+---
+
+# 🏗 CI/CD Zero Trust Architecture — Enterprise Supply Chain Security
+
+> **Objective:** Secure the most exploited attack vector in modern breaches — the **software supply chain** — by enforcing **identity-first pipeline security, cryptographic integrity, and continuous verification** across build, test, and deployment systems.
+
+Modern attackers no longer target servers — they target **pipelines, source code, artifacts, and automation identities**.
+
+This architecture establishes a **Zero Trust Software Factory**.
+
+---
+
+# 🧠 Mental Model: CI/CD as a Privileged Identity System
+
+Traditional view:
+
+> CI/CD = Automation + Scripts
+
+Modern reality:
+
+> CI/CD = **High-Privilege Identity + Token Broker + Code Execution Engine**
+
+Every pipeline run is effectively:
+
+```
+Identity → Token → API → Infrastructure → Production
+```
+
+If attackers compromise the pipeline, they bypass **every perimeter control simultaneously**.
+
+---
+
+# 🏛 CI/CD Zero Trust Reference Architecture
+
+```mermaid
+flowchart TB
+    subgraph Developers
+        Dev[Engineer]
+        IDE[IDE]
+    end
+
+    subgraph SCM[Source Control]
+        Git[GitHub / GitLab]
+        PR[Pull Requests]
+    end
+
+    subgraph Pipeline[CI/CD Control Plane]
+        Runner[Build Runners]
+        OIDC[OIDC Identity Broker]
+        PDP[Policy Decision Engine]
+        Secrets[Secrets Broker]
+    end
+
+    subgraph SupplyChain[Artifact & Registry]
+        Build[Build System]
+        SBOM[SBOM Generator]
+        Sign[Artifact Signing]
+        Registry[Artifact Registry]
+    end
+
+    subgraph Runtime[Production]
+        K8S[Kubernetes]
+        Cloud[Cloud APIs]
+    end
+
+    subgraph SOC
+        SIEM
+        SOAR
+    end
+
+    Dev --> Git --> PR --> Runner
+    Runner --> OIDC --> PDP --> Secrets
+    Runner --> Build --> SBOM --> Sign --> Registry --> Runtime
+    Pipeline --> SIEM --> SOAR
+    Runtime --> SIEM
+```
+
+---
+
+# 🔐 Core Zero Trust Principles for CI/CD
+
+## 1. No Long-Lived Secrets
+
+* Replace API keys with **OIDC Workload Identity Federation**
+* All credentials are **short-lived & dynamically issued**
+
+## 2. Cryptographic Provenance
+
+Every artifact must be:
+
+```
+Built → Measured → Signed → Verified → Deployed
+```
+
+## 3. Policy-Driven Pipelines
+
+Every stage is a **policy evaluation**, not a static script.
+
+---
+
+# 🧬 Supply Chain Attack Kill Chain
+
+```mermaid
+flowchart LR
+    Phish[Developer Phish] --> Token[Token Theft]
+    Token --> Repo[Repo Access]
+    Repo --> Pipeline[Pipeline Abuse]
+    Pipeline --> Artifact[Backdoored Artifact]
+    Artifact --> Prod[Production Compromise]
+```
+
+---
+
+# 🚨 Primary CI/CD Threat Classes
+
+| Threat                   | Description                        |
+| ------------------------ | ---------------------------------- |
+| **Token Theft**          | Stealing GitHub/GitLab OIDC tokens |
+| **Pipeline Poisoning**   | Injecting malicious build steps    |
+| **Artifact Backdooring** | Inserting malware into images      |
+| **Dependency Confusion** | Hijacking package resolution       |
+| **SBOM Tampering**       | Hiding vulnerable components       |
+
+---
+
+# 🏛 Policy Decision Model (CI/CD)
+
+```mermaid
+flowchart LR
+    Commit --> Risk[Risk Engine]
+    Risk --> Decision{Allow Build?}
+    Decision -->|Yes| Build
+    Decision -->|No| Block
+```
+
+### Signals
+
+* Commit author trust
+* PR reviewer trust
+* Code diff sensitivity
+* Dependency changes
+* Pipeline config drift
+
+---
+
+# 🔍 Detection Engineering — CI/CD Attacks
+
+## Philosophy
+
+> **Detect identity misuse and build anomalies — not malware.**
+
+---
+
+## Splunk: GitHub Actions OIDC Token Abuse
+
+```spl
+index=github actions_event=oidc_token_request
+| stats count by actor, repository, workflow
+| where count > 20
+```
+
+---
+
+## KQL: Azure DevOps Pipeline Credential Abuse
+
+```kql
+AzureDevOpsAudit
+| where OperationName contains "CreateAccessToken"
+| summarize count() by Actor, IPAddress
+| where count_ > 10
+```
+
+---
+
+# 🧪 Blue Team Lab — Supply Chain Breach
+
+### Scenario: Pipeline Poisoning → Artifact Backdoor → Production Breach
+
+**Objective:** Detect malicious pipeline modification and prevent deployment.
+
+---
+
+### Investigation Workflow
+
+```mermaid
+flowchart LR
+    Alert --> Commit
+    Commit --> Pipeline
+    Pipeline --> Artifact
+    Artifact --> Runtime
+    Runtime --> Containment
+```
+
+---
+
+# 🚩 Red Team Lab — CI/CD Pipeline Takeover
+
+### Attack: GitHub Actions Credential Hijack
+
+```bash
+# Steal workflow token
+curl $ACTIONS_ID_TOKEN_REQUEST_URL
+```
+
+---
+
+# 🔐 Hardening Controls
+
+| Layer    | Control                           |
+| -------- | --------------------------------- |
+| Identity | OIDC Federation Only              |
+| Pipeline | Signed Workflow Policies          |
+| Artifact | Sigstore / Cosign                 |
+| Registry | Immutable Tags                    |
+| Deploy   | Admission Controller Verification |
+
+---
+
+# 📋 Supply Chain Security Checklist
+
+| Category     | Control                     |
+| ------------ | --------------------------- |
+| Identity     | Short-lived pipeline tokens |
+| Build        | Hermetic builds             |
+| Dependencies | Lockfiles + Provenance      |
+| Artifacts    | Mandatory signing           |
+| Deploy       | Signature verification      |
+
+---
+
+# 🧭 Repository Integration
+
+```
+architecture-blueprints/
+ └── cicd_zero_trust_architecture.md
+
+threat-modeling/
+ └── supply_chain_threat_model.md
+
+detection-engineering/
+ ├── kql_queries/cicd_threats.md
+ └── splunk_queries/cicd_threats.md
+
+labs/
+ ├── red_team/pipeline_takeover.md
+ └── blue_team/supply_chain_breach.md
+```
+
+---
+
+# 🧠 Final Mental Model
+
+> **Your CI/CD system is your most powerful administrator.
+> Secure it like a nuclear launch console.**
+
+---
