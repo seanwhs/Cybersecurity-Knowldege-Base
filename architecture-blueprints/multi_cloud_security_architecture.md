@@ -1,2 +1,7 @@
-# Multi Cloud Security Architecture.Md
+# Multi-Cloud Security Architecture
 
+```mermaid
+graph TD
+AWS --> Azure
+Azure --> GCP
+```

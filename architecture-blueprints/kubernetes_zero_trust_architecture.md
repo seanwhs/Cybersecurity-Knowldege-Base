@@ -1,2 +1,6 @@
-# Kubernetes Zero Trust Architecture.Md
+# Kubernetes Zero Trust Architecture
 
+```mermaid
+graph TD
+Pod --> NetworkPolicy --> Service
+```

@@ -1,3 +1,3 @@
 # 🧠 Cybersecurity Knowledge Base — Enterprise Domain Architecture
 
-Full enterprise cybersecurity cognitive architecture repository.
+This is the full enterprise-grade cybersecurity knowledge base with all domains, diagrams, detection rules, and labs.
