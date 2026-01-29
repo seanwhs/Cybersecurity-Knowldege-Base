@@ -16,21 +16,23 @@ It represents a **converged platform** for:
 
 > **Security architecture, threat intelligence, detection engineering, adversary simulation, SOC operations, governance, and executive decision support.**
 
-This system is designed to function as:
+Rather than treating security as isolated disciplines, this system models cybersecurity as a **coherent, end-to-end engineered system** spanning:
 
-* A **strategic security architecture framework**
-* A **threat reasoning engine**
-* A **SOC operational playbook**
-* A **hands-on cyber range & simulation environment**
-* A **long-term cybersecurity career knowledge base**
+```mermaid
+flowchart LR
+    U[User]
+    D[Device]
+    I[Identity]
+    C[Context]
+    P[Policy]
+    A[Access]
+    T[Telemetry]
+    R[Response]
 
-Rather than siloed security disciplines, this repository treats cybersecurity as a **coherent, end-to-end engineered system** spanning:
-
+    U --> D --> I --> C --> P --> A --> T --> R --> I
 ```
-Identity → Access → Workloads → Networks → Data → Telemetry → Detection → Response → Governance
-```
 
-This approach enables **systemic security posture engineering** rather than control-driven compliance.
+This closed-loop design ensures **continuous verification, adaptation, and resilience**.
 
 ---
 
@@ -39,293 +41,335 @@ This approach enables **systemic security posture engineering** rather than cont
 > **Build a Cybersecurity Cognitive Operating System (CSOS)**
 > — capable of reasoning holistically across **architecture, identity, risk, adversaries, controls, telemetry, response, and governance.**
 
-This platform models cybersecurity as:
+### Security as an Engineered System
 
-| Layer                  | Purpose                                                              |
-| ---------------------- | -------------------------------------------------------------------- |
-| **Cognitive Layer**    | Strategic reasoning, threat modeling, architectural decision support |
-| **Architecture Layer** | Zero Trust, Identity-first, cloud-native secure system design        |
-| **Operational Layer**  | SOC detection, incident response, cyber defense operations           |
-| **Adversarial Layer**  | Red team simulation, breach modeling, attack emulation               |
-| **Governance Layer**   | Risk, compliance, audit, executive visibility                        |
+```mermaid
+flowchart TB
+    subgraph Cognitive[ Cognitive Security Layer ]
+        TM[Threat Modeling]
+        RA[Risk Analysis]
+        DS[Decision Support]
+    end
+
+    subgraph Arch[ Architecture Layer ]
+        ZT[Zero Trust]
+        ID[Identity First]
+        CL[Cloud Native]
+    end
+
+    subgraph Ops[ Operational Layer ]
+        SOC[SOC Operations]
+        DR[Detection & Response]
+    end
+
+    subgraph Adv[ Adversarial Layer ]
+        RT[Red Team]
+        PT[Purple Team]
+        LAB[Cyber Labs]
+    end
+
+    subgraph Gov[ Governance Layer ]
+        RM[Risk Management]
+        CM[Compliance]
+        EX[Executive Strategy]
+    end
+
+    Cognitive --> Arch --> Ops --> Gov
+    Adv --> Ops
+    Ops --> Cognitive
+```
 
 ---
 
 # 🌍 Standards & Framework Alignment
 
-This system aligns deeply with:
+This system operationalizes global standards into **real engineering artifacts, detection logic, and attack simulations**:
 
 * **NIST SP 800-53 / 61 / 92 / 207 (Zero Trust)**
 * **ISO 27001 / 27002**
 * **CIS Controls v8**
 * **OWASP Top 10 / ASVS / MASVS**
 * **MITRE ATT&CK & D3FEND**
-* **Cloud Security Alliance (CSA) CCM**
-* **SANS Detection Engineering & SOC methodologies**
-
-Unlike compliance-only repositories, this system **operationalizes standards into architecture, detection logic, and attack simulations.**
+* **Cloud Security Alliance CCM**
 
 ---
 
-# 🏗 Enterprise Architecture Philosophy
+# 🏛 Enterprise Architecture Philosophy
 
 ## Identity-First Security Architecture
 
-At its core, this platform implements **Identity as the new perimeter**:
+Identity becomes the **primary control plane**.
 
+```mermaid
+flowchart LR
+    U[User]
+    Dev[Device]
+    ID[Identity Provider]
+    Ctx[Context Engine]
+    PDP[Policy Decision Point]
+    PEP[Policy Enforcement Point]
+    App[Application]
+    SIEM[Telemetry & SIEM]
+
+    U --> Dev --> ID --> Ctx --> PDP --> PEP --> App
+    PEP --> SIEM
+    SIEM --> PDP
 ```
-User → Device → Identity → Context → Policy → Access → Telemetry → Continuous Verification
-```
 
-### Core Principles:
+### Core Principles
 
-* Zero implicit trust
-* Continuous authentication & authorization
-* Policy-driven access control
-* Real-time telemetry feedback loops
-* Threat-aware access enforcement
+* Continuous authentication
+* Context-aware authorization
+* Real-time policy enforcement
+* Telemetry-driven access decisions
 
 ---
 
-## Cognitive Zero Trust Model
+## Cognitive Zero Trust Architecture
 
-```
-┌─────────────────────────────────────────────────────┐
-│              Cognitive Security Layer               │
-│ Threat Modeling • Risk Analysis • Decision Support │
-└───────────────▲──────────────────────▲─────────────┘
-                │                      │
-┌───────────────┴──────────────┐  ┌────┴────────────────┐
-│     Security Architecture     │  │     SOC Operations   │
-│ Zero Trust • Identity • Cloud │  │ Detection • Response │
-└───────────────▲──────────────┘  └────┬────────────────┘
-                │                      │
-          ┌─────┴────────┐      ┌─────┴────────┐
-          │  Telemetry   │◄────►│  Threat Intel │
-          └──────────────┘      └───────────────┘
-```
+```mermaid
+flowchart TB
+    subgraph Cognitive[ Cognitive Security Layer ]
+        TM[Threat Models]
+        TI[Threat Intelligence]
+        RA[Risk Analytics]
+    end
 
-Security decisions continuously adapt based on **live telemetry and threat intelligence**.
+    subgraph ZT[ Zero Trust Control Plane ]
+        IAM[Identity & Access]
+        PDP[Policy Engine]
+        PEP[Enforcement Points]
+    end
+
+    subgraph Runtime[ Runtime Systems ]
+        APP[Applications]
+        K8S[Kubernetes]
+        VM[VM / Hosts]
+        API[APIs]
+    end
+
+    subgraph SOC[ SOC Operations ]
+        SIEM
+        SOAR
+        IR[Incident Response]
+    end
+
+    Cognitive --> PDP
+    TI --> SIEM
+    Runtime --> SIEM --> SOAR --> IR
+    PDP --> PEP --> Runtime
+    SIEM --> Cognitive
+```
 
 ---
 
-# 🗂 Repository Structure — Enterprise Knowledge Domains
+# 🗂 Repository Architecture
 
-```
-cybersecurity-knowledge-base/
-├── architecture-blueprints/
-├── threat-modeling/
-├── detection-engineering/
-├── labs/
-└── governance-compliance/
-```
+```mermaid
+graph TD
+    ROOT[cybersecurity-knowledge-base]
+    ROOT --> A[architecture-blueprints]
+    ROOT --> T[threat-modeling]
+    ROOT --> D[detection-engineering]
+    ROOT --> L[labs]
+    ROOT --> G[governance-compliance]
 
-Each domain is engineered as a **complete operational discipline**, not documentation.
+    A --> A1[Zero Trust]
+    A --> A2[Identity First]
+    A --> A3[Multi Cloud]
+    A --> A4[Kubernetes]
+    A --> A5[SaaS]
+
+    T --> T1[Cloud]
+    T --> T2[FinTech]
+    T --> T3[Healthcare]
+    T --> T4[Government]
+    T --> T5[AI]
+
+    D --> D1[Sigma]
+    D --> D2[Splunk]
+    D --> D3[KQL]
+    D --> D4[YARA]
+    D --> D5[Osquery]
+    D --> D6[Kubernetes Runtime]
+
+    L --> L1[Red Team]
+    L --> L2[Blue Team]
+    L --> L3[Purple Team]
+    L --> L4[Cloud Breach]
+    L --> L5[Ransomware]
+    L --> L6[Insider Threat]
+```
 
 ---
 
 # 🏛 Architecture Blueprints
 
-**Purpose:** Define **secure-by-design enterprise reference architectures**
+## Enterprise Zero Trust Reference Architecture
 
-### Key Blueprints:
+```mermaid
+flowchart LR
+    User --> Device --> IdP[Identity Provider]
+    IdP --> PDP[Policy Decision Point]
+    PDP --> PEP[Policy Enforcement]
+    PEP --> API
+    PEP --> Web
+    PEP --> Kubernetes
+    Kubernetes --> DB[(Data)]
+    API --> DB
+    Web --> API
 
-| Architecture              | Focus                                             |
-| ------------------------- | ------------------------------------------------- |
-| Enterprise Zero Trust     | End-to-end zero trust reference architecture      |
-| Identity-First Enterprise | Identity-driven access control plane              |
-| Multi-Cloud Security      | AWS, Azure, GCP unified security design           |
-| Kubernetes Zero Trust     | Cloud-native microsegmentation & runtime security |
-| Secure SaaS Platform      | Secure platform engineering for SaaS              |
+    Kubernetes --> SIEM
+    API --> SIEM
+    Web --> SIEM
+```
 
-### Architecture Domains Covered:
+### Security Domains
 
 * Identity & Access Control
-* Service Mesh Security
-* API Gateway Security
-* Runtime Workload Protection
-* Data Security & Encryption
-* Observability & Telemetry
-* Policy Enforcement Points (PEP)
-
-Each architecture includes:
-
-* System diagrams (Mermaid)
-* Data flows
-* Trust boundaries
-* Identity flows
-* Telemetry pipelines
-* Control enforcement models
+* Microsegmentation
+* Continuous Authorization
+* Runtime Threat Detection
+* Telemetry & SOC Integration
 
 ---
 
 # 🛡 Threat Modeling Framework
 
-**Purpose:** Transform threat modeling from documentation into **operational defense design**.
+## Threat Modeling Pipeline
 
-### Threat Model Coverage:
-
-| Domain         | Focus                                            |
-| -------------- | ------------------------------------------------ |
-| Cloud Platform | IAM abuse, lateral movement, API exploitation    |
-| FinTech        | Fraud, ATO, payment compromise, supply chain     |
-| Healthcare     | PHI theft, ransomware, insider threats           |
-| Government     | Nation-state threats, espionage, sabotage        |
-| AI Platforms   | Model poisoning, data leakage, inference attacks |
-
-### Threat Modeling Pipeline:
-
-```
-System Architecture → Attack Surface → Threat Scenarios → MITRE Mapping →
-Detection Opportunities → Hardening Controls → Telemetry Design
+```mermaid
+flowchart LR
+    Arch[Architecture] --> AS[Attack Surface]
+    AS --> TS[Threat Scenarios]
+    TS --> MITRE[MITRE Mapping]
+    MITRE --> DET[Detection Opportunities]
+    DET --> TEL[Telemetry Design]
+    TEL --> HARD[Hardening Controls]
 ```
 
-This ensures **every threat model results in detection logic and telemetry pipelines.**
+## Example: Cloud Threat Model
+
+```mermaid
+flowchart TB
+    User --> IAM
+    IAM --> API
+    API --> Compute
+    Compute --> Storage
+
+    Attacker --> IAM
+    Attacker --> API
+
+    IAM --> SIEM
+    API --> SIEM
+    Compute --> SIEM
+```
 
 ---
 
-# 🎯 Detection Engineering Platform
+# 🎯 Detection Engineering Architecture
 
-**Purpose:** Build **production-grade SOC detection capabilities**, not academic rules.
-
-### Detection Domains:
-
-| Technology         | Purpose                           |
-| ------------------ | --------------------------------- |
-| Sigma              | Platform-agnostic detection logic |
-| Splunk SPL         | SIEM detection                    |
-| Microsoft KQL      | Azure Sentinel & Defender         |
-| YARA               | Malware & file detection          |
-| Osquery            | Host-level telemetry              |
-| Kubernetes Runtime | Container threat detection        |
-
-### Detection Engineering Methodology:
-
+```mermaid
+flowchart LR
+    Threat[TTP] --> Obs[Observable]
+    Obs --> Telemetry
+    Telemetry --> Rules[Detection Logic]
+    Rules --> Alert
+    Alert --> SOAR
+    SOAR --> Response
+    Response --> Hardening
 ```
-Threat → TTP → Observable → Telemetry → Detection Logic → Alert → Response
-```
-
-This enforces **high-fidelity, low-noise detection engineering.**
 
 ---
 
-# 🧪 Enterprise Cyber Labs & Simulations
+# 🧪 Enterprise Cyber Labs
 
-**Purpose:** Build **hands-on cyber ranges and attack simulations**
+## Cyber Range Execution Flow
 
-### Lab Domains:
+```mermaid
+flowchart LR
+    AttackSim[Attack Simulation]
+    TelemetryGen[Telemetry Generation]
+    Detection[Detection Validation]
+    Response[Response Drill]
+    Lessons[Lessons Learned]
 
-| Lab            | Objective                  |
-| -------------- | -------------------------- |
-| Red Team       | Adversary simulation       |
-| Blue Team      | Detection & response       |
-| Purple Team    | Attack-defense iteration   |
-| Cloud Breach   | Cloud compromise drills    |
-| Ransomware     | Full kill-chain simulation |
-| Insider Threat | Malicious insider modeling |
-
-### Cyber Range Execution Model:
-
+    AttackSim --> TelemetryGen --> Detection --> Response --> Lessons --> AttackSim
 ```
-Attack Simulation → Telemetry Generation → Detection Validation → Response Drills → Lessons Learned
-```
-
-This converts theory into **operational muscle memory.**
 
 ---
 
 # 🔄 Continuous Security Feedback Loop
 
+```mermaid
+flowchart LR
+    Architecture --> ThreatModeling --> Detection --> Telemetry --> SOC --> Incident --> Architecture
 ```
-Architecture → Threat Modeling → Detection → Telemetry → SOC → Incident → Architecture Refinement
-```
-
-This loop ensures **security continuously evolves**, not stagnates.
 
 ---
 
 # 📈 Enterprise Value Proposition
 
-This platform enables:
-
-### 🏛 Architecture
-
-* Zero Trust adoption
-* Identity-driven design
-* Cloud-native secure systems
-* Kubernetes security engineering
-
-### 🛡 Operations
-
-* SOC maturity uplift
-* Detection engineering excellence
-* Incident response readiness
-* Purple team collaboration
-
-### 🧠 Strategy
-
-* Risk-driven security investments
-* Executive-level visibility
-* Security posture engineering
-* Threat-aware system design
+```mermaid
+flowchart TB
+    Architecture --> SecurityPosture
+    ThreatModeling --> DetectionQuality
+    DetectionQuality --> SOCMaturity
+    SOCMaturity --> BusinessResilience
+```
 
 ---
 
 # 🧭 Usage Playbooks
 
-### Security Architect Path
+## Security Architect Path
 
-1. Architecture Blueprints
-2. Threat Modeling
-3. Control Mapping
-4. Telemetry Architecture
-5. Detection Strategy
+```mermaid
+flowchart LR
+    A1[Architecture] --> A2[Threat Modeling] --> A3[Control Mapping] --> A4[Telemetry Design] --> A5[Detection Strategy]
+```
 
----
+## SOC Engineer Path
 
-### SOC Engineer Path
+```mermaid
+flowchart LR
+    S1[Telemetry] --> S2[Detection Engineering] --> S3[Response Playbooks] --> S4[Simulation Labs] --> S5[Purple Team]
+```
 
-1. Detection Engineering
-2. Telemetry Pipelines
-3. SOC Playbooks
-4. Incident Labs
-5. Purple Team Exercises
+## Executive / CISO Path
 
----
-
-### Executive / CISO Path
-
-1. Architecture Strategy
-2. Risk Framework
-3. Threat Landscape
-4. Control Effectiveness
-5. Incident Readiness
+```mermaid
+flowchart LR
+    E1[Architecture Strategy] --> E2[Risk Framework] --> E3[Threat Landscape] --> E4[Control Effectiveness] --> E5[Incident Readiness]
+```
 
 ---
 
-# 🚀 Roadmap — Next-Level Evolution
+# 🚀 Evolution Roadmap
 
-This platform is architected to evolve into:
+```mermaid
+flowchart LR
+    Phase1[Foundational CSOS] --> Phase2[Cognitive SOC] --> Phase3[Autonomous Security]
+```
 
 ### Phase 2 — Cognitive SOC Platform
 
-* Automated threat modeling
 * AI-assisted detection tuning
 * Adaptive risk scoring
-* Attack simulation orchestration
+* Automated threat modeling
 
 ### Phase 3 — Autonomous Security Engineering
 
+* Self-healing architecture
+* AI-driven response
 * Continuous control validation
-* Self-healing security architecture
-* AI-driven incident response playbooks
 
 ---
 
 # ⚡ Closing Statement
 
 > This repository is not documentation.
-> It is a **Cybersecurity Cognitive System** — a **living security brain**.
+> It is a **Cybersecurity Cognitive Operating System** — a **living security brain**.
 
 It enables:
 
@@ -333,3 +377,7 @@ It enables:
 * Engineers to build resilient platforms
 * SOC teams to detect and respond
 * Executives to reason strategically
+
+---
+
+**This is a production-grade cybersecurity engineering doctrine — not a theoretical framework.**
