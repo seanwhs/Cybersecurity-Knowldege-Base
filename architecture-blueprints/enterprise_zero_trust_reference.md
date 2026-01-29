@@ -1,4 +1,4 @@
-# 🛡 Enterprise Zero Trust Reference Architecture — Full Systems Rewrite (NIST SP 800-207 Aligned)
+# 🛡 Enterprise Zero Trust Reference Architecture (Aligned to NIST SP 800-207)
 
 > **This document defines a production-grade, adversary-resilient Zero Trust Operating Architecture.**
 > It integrates **identity-first security, continuous risk computation, real-time enforcement, SOC telemetry, detection engineering, and purple-team validation** into a single coherent enterprise system.
