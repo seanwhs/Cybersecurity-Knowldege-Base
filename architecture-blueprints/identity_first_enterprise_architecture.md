@@ -26,47 +26,53 @@ Identity is now **real-time and adaptive**, not just a static database entry.
 ```mermaid
 graph TB
     %% Subjects
-    subgraph Subjects [Human & Non-Human Identities]
-        User((Employee / Partner))
-        Device{Managed Device?}
-        Service[Service Principal / Bot / CI/CD Runner]
+    subgraph Subjects[Human & Non-Human Identities]
+        User["Employee or Partner"]
+        Device["Managed Device?"]
+        Service["Service Principal / Bot / CI/CD Runner"]
     end
 
     %% Control Plane
-    subgraph Control_Plane [Cognitive Identity Control Plane (PDP)]
-        IdP[Identity Provider: Entra ID / Okta / PingID]
-        Risk[Risk Engine: UEBA / Threat Intel / SIEM]
-        AuthZ[Policy Engine: OPA / Cedar / Rego]
+    subgraph Control_Plane[Cognitive Identity Control Plane PDP]
+        IdP["Identity Provider (Entra ID / Okta / PingID)"]
+        Risk["Risk Engine (UEBA / Threat Intel / SIEM)"]
+        AuthZ["Policy Engine (OPA / Cedar / Rego)"]
     end
 
     %% Enforcement Layer
-    subgraph Enforcement_Layer [PEP: Enforcement Layer]
-        Proxy[Identity-Aware Proxy / ZTNA]
-        Mesh[Service Mesh / Envoy Sidecar]
-        Secrets[Secrets Manager / Workload Identity Federation]
+    subgraph Enforcement_Layer[PEP Enforcement Layer]
+        Proxy["Identity-Aware Proxy / ZTNA"]
+        Mesh["Service Mesh / Envoy Sidecar"]
+        Secrets["Secrets Manager / Workload Identity Federation"]
     end
 
     %% Protected Resources
-    subgraph Resources [Protected Assets]
-        SaaS[SaaS Apps]
-        API[Internal APIs]
-        Cloud[Cloud Infrastructure]
-        DB[(Databases)]
-        K8s[Kubernetes Clusters]
-        CI[CI/CD Pipelines]
+    subgraph Resources[Protected Assets]
+        SaaS["SaaS Apps"]
+        API["Internal APIs"]
+        Cloud["Cloud Infrastructure"]
+        DB["Databases"]
+        K8s["Kubernetes Clusters"]
+        CI["CI/CD Pipelines"]
     end
 
     %% Flows
-    User -->|1. Access Request| Proxy
-    Device -->|2. Device Signal| Risk
-    Service -->|3. API/Token Request| Mesh
-    Proxy -->|4. Authenticate & Context| IdP
-    IdP <-->|5. Aggregate Risk Signals| Risk
-    IdP -->|6. Policy Evaluation| AuthZ
-    AuthZ -->|7. Issue Short-Lived / JIT Token| Proxy
-    Proxy -->|8. Secure Tunnel / Enforcement| SaaS & API & DB & K8s
-    Mesh -->|9. Token Exchange| Secrets
-    Secrets -->|10. Access Authorization| Cloud & K8s & CI
+    User -->|Access Request| Proxy
+    Device -->|Device Signal| Risk
+    Service -->|API/Token Request| Mesh
+    Proxy -->|Authenticate & Context| IdP
+    IdP <-->|Aggregate Risk Signals| Risk
+    IdP -->|Policy Evaluation| AuthZ
+    AuthZ -->|Issue Short-Lived / JIT Token| Proxy
+    Proxy -->|Secure Tunnel / Enforcement| SaaS
+    Proxy -->|Secure Tunnel / Enforcement| API
+    Proxy -->|Secure Tunnel / Enforcement| DB
+    Proxy -->|Secure Tunnel / Enforcement| K8s
+    Mesh -->|Token Exchange| Secrets
+    Secrets -->|Access Authorization| Cloud
+    Secrets -->|Access Authorization| K8s
+    Secrets -->|Access Authorization| CI
+
 ```
 
 ---
